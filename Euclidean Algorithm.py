@@ -21,24 +21,28 @@
 
         function basla() {
             let sonucDiv = document.getElementById("sonuc");
+            let devam = true;
 
-            function sor() {
+            while (devam) {
                 let a = parseInt(prompt("Bir sayı giriniz:"));
                 let b = parseInt(prompt("İkinci bir sayı giriniz:"));
+
+                // Sonucu hemen yazdır
                 let sonuc = OBEB(a, b);
                 sonucDiv.innerHTML += `<p>OBEB(${a}, ${b}) = ${sonuc}</p>`;
 
-                let devam = prompt("Devam etmek ister misiniz? (Evet/Hayır)").toLowerCase();
-                if (devam === "evet") {
-                    sor(); // Kendini tekrar çağırır
+                // Devam etmek isteyip istemediğini sor
+                let cevap = prompt("Yeni işlem yapmak ister misiniz? (Evet/Hayır)").toLowerCase();
+                if (cevap !== "evet") {
+                    devam = false;
                 }
             }
-
-            sor(); // İlk çağrı
         }
     </script>
 </body>
 </html>
 
+
         
+
 
