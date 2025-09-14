@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Öklid Algoritması - OBEB</title>
+    <style>
+      body { font-family: Arial, sans-serif; padding: 20px; }
+      #sonuc p { margin: 6px 0; }
+    </style>
 </head>
 <body>
     <h1>Öklid Algoritması ile OBEB Hesaplama</h1>
     <div id="sonuc"></div>
-    <button onclick="basla()">Başlat</button>
+    <button id="baslatBtn">Başlat</button>
 
     <script>
         function OBEB(a, b) {
+            a = Math.abs(a);
+            b = Math.abs(b);
             while (b !== 0) {
                 let temp = b;
                 b = a % b;
@@ -19,30 +25,48 @@
             return a;
         }
 
+        document.getElementById("baslatBtn").addEventListener("click", basla);
+
         function basla() {
-            let sonucDiv = document.getElementById("sonuc");
-            let devam = true;
+            const sonucDiv = document.getElementById("sonuc");
 
-            while (devam) {
-                let a = parseInt(prompt("Bir sayı giriniz:"));
-                let b = parseInt(prompt("İkinci bir sayı giriniz:"));
-
-                // Sonucu hemen yazdır
-                let sonuc = OBEB(a, b);
-                sonucDiv.innerHTML += `<p>OBEB(${a}, ${b}) = ${sonuc}</p>`;
-
-                // Devam etmek isteyip istemediğini sor
-                let cevap = prompt("Yeni işlem yapmak ister misiniz? (Evet/Hayır)").toLowerCase();
-                if (cevap !== "evet") {
-                    devam = false;
+            function sor() {
+                // İlk sayı
+                let aStr = prompt("Bir sayı giriniz:");
+                if (aStr === null) return; // Kullanıcı iptal etti
+                let a = parseInt(aStr, 10);
+                if (Number.isNaN(a)) {
+                    alert("Geçerli bir tam sayı giriniz.");
+                    return sor();
                 }
+
+                // İkinci sayı
+                let bStr = prompt("İkinci bir sayı giriniz:");
+                if (bStr === null) return;
+                let b = parseInt(bStr, 10);
+                if (Number.isNaN(b)) {
+                    alert("Geçerli bir tam sayı giriniz.");
+                    return sor();
+                }
+
+                // Sonucu hemen sayfaya yaz
+                let sonuc = OBEB(a, b);
+                sonucDiv.innerHTML += `<p>OBEB(${a}, ${b}) = <strong>${sonuc}</strong></p>`;
+
+                // Burada prompt'u hemen açarsak tarayıcı bazen sonucu render etmeden yeni prompt'u gösterir.
+                // setTimeout ile prompt çağrısını geciktiriyoruz ki önce DOM güncellensin.
+                setTimeout(function() {
+                    let devam = prompt("Yeni işlem yapmak ister misiniz? (Evet/Hayır)");
+                    if (devam && devam.toLowerCase().trim() === "evet") {
+                        sor();
+                    }
+                }, 0);
             }
+
+            sor(); // ilk çağrı
         }
     </script>
 </body>
 </html>
-
-
-        
 
 
